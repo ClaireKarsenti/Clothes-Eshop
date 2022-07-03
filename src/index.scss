@@ -9,3 +9,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+a {
+  text-decoration: none; //Get rid of the underline link
+  color: black; //Colored the link
+}
+
+* {
+  box-sizing: border-box;
+}
