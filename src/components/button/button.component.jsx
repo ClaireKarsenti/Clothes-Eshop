@@ -4,7 +4,7 @@ inverted : black bordered
 google sign-in : blue
 */
 
-import './button.styles.scss'
+import "./button.styles.scss";
 
 const BUTTON_TYPE_CLASSES = {
   google: "google-sign-in",
@@ -13,7 +13,10 @@ const BUTTON_TYPE_CLASSES = {
 
 const Button = ({ children, buttonType, ...otherProps }) => {
   return (
-    <button className={`button-container ${BUTTON_TYPE_CLASSES[buttonType]}`} {...otherProps}>
+    <button
+      className={`button-container ${BUTTON_TYPE_CLASSES[buttonType]}`}
+      {...otherProps}
+    >
       {children}
     </button>
   );
