@@ -94,4 +94,4 @@ export const signOutUser = async () => await signOut(auth);
 export const onAuthStateChangedListener = (callback) =>
   //The moment I call this onAuthStateChanged method, It's like I said "create a listerner for me using this callback"
   //This is a permanently open listerner
-  onAuthStateChanged(auth, callback, errorCallback, completedCallback);
+  onAuthStateChanged(auth, callback);
