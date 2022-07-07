@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -32,8 +33,10 @@ googleProvider.setCustomParameters({
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
-export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
 
 // Database
 export const db = getFirestore();
@@ -86,3 +89,9 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 
 // Sign out
 export const signOutUser = async () => await signOut(auth);
+
+//When ever a user is authenticated in or out
+export const onAuthStateChangedListener = (callback) =>
+  //The moment I call this onAuthStateChanged method, It's like I said "create a listerner for me using this callback"
+  //This is a permanently open listerner
+  onAuthStateChanged(auth, callback, errorCallback, completedCallback);
