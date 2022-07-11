@@ -21,7 +21,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-// Your web app's Firebase configuration
+// My web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyB51SviP2NIfsh8o5k_ZAKd1LMEk5DDrsE",
   authDomain: "crwn-clothing-db-89865.firebaseapp.com",
