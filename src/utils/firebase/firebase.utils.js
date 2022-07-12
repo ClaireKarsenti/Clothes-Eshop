@@ -72,20 +72,14 @@ export const getCategoriesAndDocuments = async () => {
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  const categoryMap = querySnapshot.docs.reduce((accumulator, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    accumulator[title.toLowerCase()] = items;
-    return accumulator;
-  }, {});
-
-  return categoryMap;
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 };
 
 export const createUserDocumentFromAuth = async (
   userAuth,
   additionalInformation = {}
 ) => {
-  if (!userAuth) return; //If we don't have a userAuth we want a return
+  if (!userAuth) return; //If I don't have a userAuth I want a return
 
   const userDocRef = doc(db, "users", userAuth.uid); // (database, 'collection', identifier) identifier = unique id
 

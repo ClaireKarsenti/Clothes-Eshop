@@ -5,7 +5,20 @@ what the action is and then how the state intern look after the action*/
 
 import { rootReducer } from "./root-reducer";
 
-const middleWares = [logger]; // middleWares is kind of a library helpers that run before an action hit the reducer
+const loggerMiddleware = (store) => (next) => (action) => {
+  if (!action.type) {
+    return next(action);
+  }
+  console.log("type:", action.type);
+  console.log("payload:", action.payload);
+  console.log("currentState:", store.getState());
+
+  next(action);
+
+  console.log("next state:", store.getState());
+};
+
+const middleWares = [loggerMiddleware]; // middleWares is kind of a library helpers that run before an action hit the reducer
 
 const composedEnhancers = compose(applyMiddleware(...middleWares));
 
