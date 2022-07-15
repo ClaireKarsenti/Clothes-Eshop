@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger"; /*Logger allows me to see in the console what the state looks like before an action is dispatch, 
 what the action is and then how the state intern look after the action*/
+import thunk from "redux-thunk";
 
 import { rootReducer } from "./root-reducer";
 
@@ -10,7 +11,7 @@ import { rootReducer } from "./root-reducer";
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["user"], //I don't want to persist the user so I blacklist it.
+  whitelist: ["cart"], //I want to persist the cart
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -19,9 +20,10 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 I want to run this logger from middleWares only when I am in development and not when I am in production. 
 For that I need to leverage the process.env.NODE_ENV that tell me wether not I am in development or in prodcution
 based on the string 'development' or 'production' */
-const middleWares = [process.env.NODE_ENV !== "production" && logger].filter(
-  Boolean
-);
+const middleWares = [
+  process.env.NODE_ENV !== "production" && logger,
+  thunk,
+].filter(Boolean);
 
 //I use Redux DevTools
 const composeEnhancer =
