@@ -103,8 +103,8 @@ export const createUserDocumentFromAuth = async (
     }
   }
 
-  //If user data exists return userDocRef
-  return userDocRef;
+  //If user data exists return userSnapshot
+  return userSnapshot;
 };
 
 // Email & password create with sign-up
@@ -129,3 +129,17 @@ export const onAuthStateChangedListener = (callback) =>
   //The moment I call this onAuthStateChanged method, It's like I said "create a listerner for me using this callback"
   //This is a permanently open listerner
   onAuthStateChanged(auth, callback);
+
+//I want to see if there is an active user that's been authenticated
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};

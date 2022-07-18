@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux"; //Allows me to interact from a component with the redux store
+import { useSelector, useDispatch } from "react-redux"; //useSelector allows me to interact from a component with the redux store
 
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
@@ -9,7 +9,7 @@ import { selectIsCartOpen } from "../../store/cart/cart.selector";
 import { selectCurrentUser } from "../../store/user/user.selector";
 
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
-import { signOutUser } from "../../utils/firebase/firebase.utils";
+import { signOutStart } from "../../store/user/user.action";
 
 import {
   NavigationContainer,
@@ -19,11 +19,15 @@ import {
 } from "./navigation.styles";
 
 const Navigation = () => {
+  const dispatch = useDispatch();
+
   const currentUser = useSelector(selectCurrentUser);
   /*useSelector is a hook that I passed a selector function which extract off 
   the value that I want from the all entire redux store*/
 
   const isCartOpen = useSelector(selectIsCartOpen);
+
+  const signOutUser = () => dispatch(signOutStart());
 
   return (
     <Fragment>
