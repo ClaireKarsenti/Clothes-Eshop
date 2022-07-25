@@ -1,5 +1,5 @@
-import { compose, createStore, applyMiddleware } from "redux";
-import { persistStore, persistReducer } from "redux-persist";
+import { compose, createStore, applyMiddleware, Middleware } from "redux";
+import { persistStore, persistReducer, PersistConfig } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger"; /*Logger allows me to see in the console what the state looks like before an action is dispatch, 
 what the action is and then how the state intern look after the action*/
@@ -10,8 +10,20 @@ import { rootSaga } from "./root-saga";
 
 import { rootReducer } from "./root-reducer";
 
+export type RootState = ReturnType<typeof rootReducer>;
+
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+
+type ExtendedPersistConfig = PersistConfig<RootState> & {
+  whitelist: (keyof RootState)[];
+};
+
 //I want to keep the item in the cart when I refresh. For that I need to use redux-persist.
-const persistConfig = {
+const persistConfig: ExtendedPersistConfig = {
   key: "root",
   storage,
   whitelist: ["cart"], //I want to persist the cart
@@ -28,7 +40,7 @@ based on the string 'development' or 'production' */
 const middleWares = [
   process.env.NODE_ENV !== "production" && logger,
   sagaMiddleWare,
-].filter(Boolean);
+].filter((middleware): middleware is Middleware => Boolean(middleware));
 
 //I use Redux DevTools
 const composeEnhancer =
