@@ -9,7 +9,11 @@ const shrinkLabelStyles = css`
   color: ${mainColor};
 `;
 
-export const FormInputLabel = styled.label`
+type FormInputLabelProps = {
+  shrink?: boolean;
+};
+
+export const FormInputLabel = styled.label<FormInputLabelProps>`
   //I need to declare the FormInputLabel first/before the Input, because I need it inside of it.
   color: ${subColor}; //Ref to ligne 4
   font-size: 16px;
