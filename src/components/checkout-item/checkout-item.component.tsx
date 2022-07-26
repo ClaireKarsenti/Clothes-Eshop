@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -25,8 +25,8 @@ type CheckoutItemProps = {
   cartItem: CartItem;
 };
 
-
-const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
+//memo: If the props/values are the same, the component will not be re-rendered.
+const CheckoutItem: FC<CheckoutItemProps> = memo(({ cartItem }) => {
   const { name, imageUrl, price, quantity } = cartItem;
 
   const dispatch = useDispatch();
@@ -53,6 +53,6 @@ const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
       <RemoveButton onClick={clearItemHandler}>&#10005;</RemoveButton>
     </CheckoutItemContainer>
   );
-};
+});
 
 export default CheckoutItem;
