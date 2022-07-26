@@ -10,6 +10,7 @@ import {
   onAuthStateChanged,
   NextOrObserver,
   User,
+  UserCredential,
 } from "firebase/auth";
 
 import {
@@ -23,8 +24,6 @@ import {
   getDocs,
   QueryDocumentSnapshot,
 } from "firebase/firestore";
-
-import { Category } from "../../store/categories/category.types";
 
 // My web app's Firebase configuration
 const firebaseConfig = {
@@ -56,7 +55,7 @@ export const signInWithGoogleRedirect = () =>
 export const db = getFirestore();
 
 // New type
-export type ObjectToAdd = {
+type ObjectToAdd = {
   title: string;
 };
 
@@ -77,30 +76,42 @@ export const addCollectionAndDocuments = async <T extends ObjectToAdd>(
   console.log("done");
 };
 
-export const getCategoriesAndDocuments = async (): Promise<Category[]> => {
-  const collectionRef = collection(db, "categories");
+type CategoryItem = {	
+  id: number;	
+  imageUrl: string;	
+  name: string;	
+  price: number;	
+};	
+type CategoryData = {	
+  imageUrl: string;	
+  items: CategoryItem[];	
+  title: string;
+};
+
+export const getCategoriesAndDocuments = async (): Promise<CategoryData[]> => {
+  const collectionRef = collection(db, 'categories');
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map(
-    (docSnapshot) => docSnapshot.data() as Category
+    (docSnapshot) => docSnapshot.data() as CategoryData
   );
 };
 
 export type AdditionalInformation = {
-  dislayName?: string;
+  displayName?: string;
 };
 
 export type UserData = {
   email: string;
   createdAt: Date;
-  dislayName: string;
+  displayName: string;
 };
 
 export const createUserDocumentFromAuth = async (
   userAuth: User,
-  additionalInformation = {} as AdditionalInformation
-): Promise<void | QueryDocumentSnapshot<UserData>> => {
+  additionalInformation: AdditionalInformation = {} as AdditionalInformation
+): Promise<QueryDocumentSnapshot<UserData> | void> => {
   if (!userAuth) return; //If I don't have a userAuth I want a return
 
   const userDocRef = doc(db, "users", userAuth.uid); // (database, 'collection', identifier) identifier = unique id
@@ -133,7 +144,7 @@ export const createUserDocumentFromAuth = async (
 export const createAuthUserWithEmailAndPassword = async (
   email: string,
   password: string
-) => {
+): Promise<UserCredential | void> => {
   if (!email || !password) return; //If we don't have an email or password we want a return
 
   return await createUserWithEmailAndPassword(auth, email, password);
@@ -143,14 +154,14 @@ export const createAuthUserWithEmailAndPassword = async (
 export const signInAuthUserWithEmailAndPassword = async (
   email: string,
   password: string
-) => {
+): Promise<UserCredential | void> => {
   if (!email || !password) return; //If we don't have an email or password we want a return
 
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
 // Sign out
-export const signOutUser = async () => await signOut(auth);
+export const signOutUser = async (): Promise<void> => await signOut(auth);
 
 //When ever a user is authenticated in or out
 export const onAuthStateChangedListener = (callback: NextOrObserver<User>) =>

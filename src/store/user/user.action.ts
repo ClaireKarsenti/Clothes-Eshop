@@ -10,6 +10,7 @@ import {
   UserData,
   AdditionalInformation,
 } from "../../utils/firebase/firebase.utils";
+
 import { User } from "firebase/auth";
 
 //My action types
@@ -81,7 +82,7 @@ export const emailSignInStart = withMatcher(
 );
 
 export const signInSuccess = withMatcher(
-  (user: UserData): SignInSuccess =>
+  (user: UserData & { id: string }): SignInSuccess =>
     createAction(USER_ACTION_TYPES.SIGN_IN_SUCCESS, user)
 );
 

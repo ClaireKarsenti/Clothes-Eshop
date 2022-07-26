@@ -8,14 +8,14 @@ export enum CATEGORIES_ACTION_TYPES {
 
 export type CategoryItem = {
   id: number;
-  imageUrel: string;
+  imageUrl: string;
   name: string;
   price: number;
 };
 
 export type Category = {
   title: string;
-  imageUrel: string;
+  imageUrl: string;
   items: CategoryItem[];
 };
 
