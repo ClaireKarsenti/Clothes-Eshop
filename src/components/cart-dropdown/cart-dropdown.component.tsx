@@ -16,7 +16,7 @@ const CartDropdown = () => {
   const cartItems = useSelector(selectCartItems);
   const navigate = useNavigate();
 
-  //I memorize this function with useCallback. I memorize the function, not the output of this function.
+  //I memoize this function with useCallback. I memoize the function, not the output of this function.
   const goToCheckoutHandler = useCallback(() => {
     navigate("/checkout");
   }, []);
